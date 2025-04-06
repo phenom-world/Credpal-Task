@@ -1,10 +1,10 @@
 import { FilterQuery } from 'mongoose';
 
 import { Repository } from '../../../../shared/utils/data-repo.util';
+import { sanitize } from '../../../../shared/utils/helper.util';
 import { Paginate } from '../../../../types';
-import { GetAllUsersQuery, UserRole, UserStatus } from '../interfaces/user.interface';
+import { GetAllUsersQuery, UserStatus } from '../interfaces/user.interface';
 import UserModel, { User } from '../models/user.model';
-
 class UserService {
   private readonly repo: Repository<User>;
 
@@ -12,11 +12,11 @@ class UserService {
     this.repo = new Repository(UserModel);
   }
 
-  async getAllUsers(paginate: Paginate, query: GetAllUsersQuery) {
+  async getAllUsers(paginate: Paginate, query: GetAllUsersQuery): Promise<{ count: number; records: User[] }> {
     const { limit, offset } = paginate;
     const { search, status } = query;
 
-    const filter: FilterQuery<User> = { role: UserRole.USER, status: status ?? UserStatus.ACTIVE };
+    const filter: FilterQuery<User> = sanitize({ status: status ?? UserStatus.ACTIVE });
 
     if (search) {
       Object.assign(filter, { $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }] });
@@ -28,9 +28,12 @@ class UserService {
     });
   }
 
-  async getUser(userId: string) {
-    const user = await this.repo.findOneOrThrow({ _id: userId });
-    return user;
+  async getUser(userId: string): Promise<User> {
+    return await this.repo.findOneOrThrow({ _id: userId });
+  }
+
+  async deleteUser(userId: string): Promise<void> {
+    await this.repo.delete({ _id: userId });
   }
 }
 

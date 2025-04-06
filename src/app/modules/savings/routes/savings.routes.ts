@@ -24,12 +24,11 @@ class savingsRouter {
 
     this.router.post('/', this.savingsValidator.validateCreatesavings, this.savingsController.create);
 
-    this.router.get('/', this.savingsValidator.validateGetAll, this.paginationMiddleware.paginate, this.savingsController.getAll);
+    this.router.get('/', this.savingsValidator.validateGetAllSavings, this.paginationMiddleware.paginate, this.savingsController.getAll);
 
-    this.router.get('/:id', this.savingsController.getById);
-    this.router.get('/user/:userId', this.savingsController.getByUserId);
+    this.router.get('/:id', this.savingsController.getOne);
 
-    this.router.put('/:id', this.savingsValidator.validateUpdate, this.savingsController.update);
+    this.router.put('/:id', this.savingsValidator.validateUpdatesavings, this.savingsController.update);
 
     this.router.delete('/:id', this.savingsController.delete);
   }

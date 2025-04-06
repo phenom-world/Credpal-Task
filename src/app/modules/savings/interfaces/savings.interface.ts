@@ -1,5 +1,5 @@
 import { InferSchema } from '../../../../types';
-import { createsavingsSchema, updatesavingsSchema } from '../validations/savings.validation';
+import { createsavingsSchema, getAllSavingsQuerySchema, updatesavingsSchema } from '../validations/savings.validation';
 
 export enum SavingsStatus {
   ACTIVE = 'active',
@@ -16,3 +16,4 @@ export enum SavingsType {
 }
 export interface CreateSavingsDto extends InferSchema<typeof createsavingsSchema> {}
 export interface UpdateSavingsDto extends InferSchema<typeof updatesavingsSchema> {}
+export interface GetAllSavingsQuery extends InferSchema<typeof getAllSavingsQuerySchema> {}

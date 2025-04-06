@@ -25,6 +25,13 @@ class UserController {
     const users = await this.userService.getAllUsers(paginate, req.query);
     return ApiResponse(res, StatusCodes.OK, paginateResponse({ rows: users.records, paginate, count: users.count }));
   });
+
+  // delete user
+  deleteUser = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    await this.userService.deleteUser(id);
+    return ApiResponse(res, StatusCodes.OK, null, 'User deleted successfully');
+  });
 }
 
 export default UserController;

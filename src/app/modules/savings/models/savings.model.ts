@@ -1,12 +1,13 @@
 import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
+import mongoose from 'mongoose';
 
 import { schemaOptions } from '../../utility/constants/schema.contants';
 import { SavingsStatus, SavingsType } from '../interfaces/savings.interface';
 
 @modelOptions(schemaOptions)
 export class Savings {
-  @prop({ required: true })
-  userId!: string;
+  @prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  userId!: mongoose.Types.ObjectId;
 
   @prop({ required: true, min: 0 })
   amount!: number;
