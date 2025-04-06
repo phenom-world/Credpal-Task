@@ -2,7 +2,7 @@ import { FilterQuery } from 'mongoose';
 
 import { Repository } from '../../../../shared/utils/data-repo.util';
 import { sanitize } from '../../../../shared/utils/helper.util';
-import { Paginate } from '../../../../types';
+import { MongoObjectId, Paginate } from '../../../../types';
 import { GetAllUsersQuery, UserStatus } from '../interfaces/user.interface';
 import UserModel, { User } from '../models/user.model';
 class UserService {
@@ -28,7 +28,7 @@ class UserService {
     });
   }
 
-  async getUser(userId: string): Promise<User> {
+  async getUser(userId: MongoObjectId): Promise<User> {
     return await this.repo.findOneOrThrow({ _id: userId });
   }
 

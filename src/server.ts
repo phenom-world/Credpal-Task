@@ -3,6 +3,8 @@ import 'dotenv/config';
 import http, { Server as HttpServer } from 'http';
 
 import App from './app';
+import { EventHandlers } from './app/modules/utility/events';
+import eventsService from './app/modules/utility/services/events.service';
 import config from './config';
 import connectDB from './config/db';
 import logger from './shared/helpers/logger.helper';
@@ -17,11 +19,18 @@ class Server {
     this.app = new App();
     this.server = http.createServer(this.app.getApp());
     this.setupErrorHandlers();
+    this.setupEventListeners();
     this.connectToDatabase();
   }
 
   private async connectToDatabase(): Promise<void> {
     await connectDB();
+  }
+
+  private setupEventListeners(): void {
+    Object.entries(EventHandlers.handlers).forEach(([event, handler]) => {
+      eventsService.listen(event, handler.handle.bind(handler));
+    });
   }
 
   private setupErrorHandlers(): void {

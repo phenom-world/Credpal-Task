@@ -3,21 +3,23 @@ import { z } from 'zod';
 
 import { validate } from '../../../../shared/helpers/validation.helper';
 import { sanitize } from '../../../../shared/utils/helper.util';
-import { SavingsStatus, SavingsType } from '../interfaces/savings.interface';
 
 export const createsavingsSchema = z.object({
   amount: z.number().positive(),
-  type: z.nativeEnum(SavingsType),
-  startDate: z.date(),
-  endDate: z.date().optional(),
+  savingGoalId: z.string().regex(/^[0-9a-f]{24}$/, {
+    message: 'Invalid saving goal ID format.',
+  }),
 });
 
 export const getAllSavingsQuerySchema = z.object({
   page: z.string().optional(),
   limit: z.string().optional(),
-  search: z.string().optional(),
-  status: z.nativeEnum(SavingsStatus).optional(),
-  type: z.nativeEnum(SavingsType).optional(),
+  savingGoalId: z
+    .string()
+    .regex(/^[0-9a-f]{24}$/, {
+      message: 'Invalid saving goal ID format.',
+    })
+    .optional(),
 });
 
 export const updatesavingsSchema = createsavingsSchema.partial();
@@ -40,7 +42,10 @@ class SavingsValidator {
   validateGetAllSavings(req: Request, _res: Response, next: NextFunction) {
     const data = req.query;
     const response = getAllSavingsQuerySchema.safeParse(data);
-    req.query = sanitize(response.data);
+    req.query = sanitize({
+      ...response.data,
+      savingGoalId: response.data?.savingGoalId?.toString(),
+    });
     return validate(response, next);
   }
 }

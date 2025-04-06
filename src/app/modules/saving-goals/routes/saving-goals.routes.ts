@@ -3,8 +3,7 @@ import { Router } from 'express';
 import authMiddleware from '../../../middlewares/auth.middleware';
 import PaginationMiddleware from '../../../middlewares/pagination.middleware';
 import { SavingsController } from '../controllers/savings.controller';
-import SavingsValidator from '../validations/savings.validation';
-import { validateSaving, validateUserSavingGoal } from '../validations/validate-savings.middleware';
+import SavingsValidator from '../validations/saving-goals.validation';
 
 class savingsRouter {
   private savingsController: SavingsController;
@@ -23,15 +22,15 @@ class savingsRouter {
   initializeRoutes(): void {
     this.router.use(authMiddleware.isAuthenticated);
 
-    this.router.post('/', this.savingsValidator.validateCreatesavings, validateUserSavingGoal, this.savingsController.create);
+    this.router.post('/', this.savingsValidator.validateCreateSavingGoals, this.savingsController.create);
 
-    this.router.get('/', this.savingsValidator.validateGetAllSavings, this.paginationMiddleware.paginate, this.savingsController.getAll);
+    this.router.get('/', this.savingsValidator.validateGetAllSavingGoals, this.paginationMiddleware.paginate, this.savingsController.getAll);
 
-    this.router.get('/:id', validateSaving, this.savingsController.getOne);
+    this.router.get('/:id', this.savingsController.getOne);
 
-    this.router.put('/:id', this.savingsValidator.validateUpdatesavings, validateSaving, this.savingsController.update);
+    this.router.put('/:id', this.savingsValidator.validateUpdateSavingGoals, this.savingsController.update);
 
-    this.router.delete('/:id', validateSaving, this.savingsController.delete);
+    this.router.delete('/:id', this.savingsController.delete);
   }
 
   getRouter(): Router {

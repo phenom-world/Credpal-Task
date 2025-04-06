@@ -5,8 +5,8 @@ import { paginateResponse } from '../../../../shared/helpers/paginate-response.h
 import { ApiResponse } from '../../../../shared/utils/helper.util';
 import { CustomRequest } from '../../../../types';
 import { asyncHandler } from '../../../middlewares/async-handler.middleware';
-import { CreateSavingsDto, UpdateSavingsDto } from '../interfaces/savings.interface';
-import { SavingsService } from '../services/savings.service';
+import { CreateSavingGoalsDto, UpdateSavingGoalsDto } from '../interfaces/savings.interface';
+import { SavingsService } from '../services/savings-goal.service';
 export class SavingsController {
   private savingsService: SavingsService;
 
@@ -15,16 +15,18 @@ export class SavingsController {
   }
 
   // create savings
-  create = asyncHandler(async (req: CustomRequest<CreateSavingsDto>, res: Response) => {
-    const savings = await this.savingsService.create(req.body);
-    return ApiResponse(res, StatusCodes.CREATED, savings, 'Savings created successfully');
+  create = asyncHandler(async (req: CustomRequest<CreateSavingGoalsDto>, res: Response) => {
+    const userId = req.user.id;
+    const savings = await this.savingsService.create(userId, req.body);
+    return ApiResponse(res, StatusCodes.CREATED, savings, 'Saving goal created successfully');
   });
 
   // update savings
-  update = asyncHandler(async (req: CustomRequest<UpdateSavingsDto>, res: Response) => {
+  update = asyncHandler(async (req: CustomRequest<UpdateSavingGoalsDto>, res: Response) => {
     const { id } = req.params;
-    const savings = await this.savingsService.update(id, req.body);
-    return ApiResponse(res, StatusCodes.OK, savings, 'Savings updated successfully');
+    const userId = req.user.id;
+    const savings = await this.savingsService.update(id, userId, req.body);
+    return ApiResponse(res, StatusCodes.OK, savings, 'Saving goal updated successfully');
   });
 
   // get all savings
@@ -38,14 +40,16 @@ export class SavingsController {
   // get one savings
   getOne = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const savings = await this.savingsService.getOneSavings(id);
+    const userId = req.user.id;
+    const savings = await this.savingsService.getOneSavings(id, userId);
     return ApiResponse(res, StatusCodes.OK, savings);
   });
 
   // delete savings
   delete = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
-    await this.savingsService.delete(id);
-    return ApiResponse(res, StatusCodes.OK, null, 'Savings deleted successfully');
+    const userId = req.user.id;
+    await this.savingsService.delete(id, userId);
+    return ApiResponse(res, StatusCodes.OK, null, 'Saving goal deleted successfully');
   });
 }

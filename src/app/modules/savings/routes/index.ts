@@ -10,7 +10,7 @@ class LoadsavingsRouters {
   }
 
   loadRouters(): void {
-    this.router.use('/api/savings', this.savingsRouter.getRouter());
+    this.router.use('/api/saving', this.savingsRouter.getRouter());
   }
 }
 

@@ -32,7 +32,8 @@ class AuthController {
 
   // Change a user's password
   changePassword = asyncHandler(async (req: CustomRequest<{ password: string }>, res: Response) => {
-    await this.authService.changePassword(req.user.id, req.body.password);
+    const userId = req.user.id;
+    await this.authService.changePassword(userId, req.body.password);
     return ApiResponse(res, StatusCodes.OK, null, 'Password changed successfully');
   });
 

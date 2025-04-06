@@ -15,7 +15,8 @@ class UserController {
 
   // get loggedin user
   getMe = asyncHandler(async (req: Request, res: Response) => {
-    const user = await this.userService.getUser(req.user.id);
+    const userId = req.user.id;
+    const user = await this.userService.getUser(userId);
     return ApiResponse(res, StatusCodes.OK, user);
   });
 
