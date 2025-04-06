@@ -20,10 +20,3 @@ export const generateAlphaNumericString = (length: number, prefix = '', suffix: 
   const lastChar = customAlphabet(smallLetters, 1);
   return `${prefix}${nanoid()}${lastChar()}${suffix}`;
 };
-
-export const getFullName = (firstName: string | null = '', lastName: string | null = '', alt?: string) => {
-  if (!firstName && !lastName) {
-    return alt ?? '-';
-  }
-  return `${firstName} ${lastName}`;
-};
