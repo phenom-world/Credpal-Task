@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import mongoose from 'mongoose';
 import { z } from 'zod';
 
 export type ObjectData = {
@@ -13,5 +14,7 @@ export type PaginateResponse<T> = {
   count: number;
   records: T;
 };
+
+export type MongoObjectId = mongoose.Types.ObjectId;
 
 export type Intent = 'authorize' | 'capture';

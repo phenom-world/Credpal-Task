@@ -1,12 +1,17 @@
 import { Express, Request, Response } from 'express';
 
+import LoadSavingGoalRouters from './modules/saving-goals/routes';
+import LoadsavingsRouters from './modules/savings/routes';
 import LoadUserRouters from './modules/user/routes';
-
 class AppRouter {
   private readonly userRouters: LoadUserRouters;
+  private readonly savingsRouter: LoadsavingsRouters;
+  private readonly savingGoalRouter: LoadSavingGoalRouters;
 
   constructor(private readonly app: Express) {
     this.userRouters = new LoadUserRouters(this.app);
+    this.savingsRouter = new LoadsavingsRouters(this.app);
+    this.savingGoalRouter = new LoadSavingGoalRouters(this.app);
   }
 
   loadRouters(): void {
@@ -14,6 +19,8 @@ class AppRouter {
 
     // Register all routers here
     this.userRouters.loadRouters();
+    this.savingsRouter.loadRouters();
+    this.savingGoalRouter.loadRouters();
   }
 
   private healthCheck(app: Express): void {

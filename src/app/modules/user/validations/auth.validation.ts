@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 
 import { validate } from '../../../../shared/helpers/validation.helper';
-
+import { UserRole } from '../interfaces/user.interface';
 export const loginSchema = z.object({
   email: z.string().min(1, { message: 'Email is required' }).email({ message: 'Invalid email address' }),
   password: z.string(),
@@ -13,6 +13,7 @@ export const registerSchema = z.object({
   password: z.string().min(1, { message: 'Password is required' }),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
+  role: z.nativeEnum(UserRole).optional(),
 });
 
 class AuthValidator {

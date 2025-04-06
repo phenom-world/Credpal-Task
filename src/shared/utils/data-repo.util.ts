@@ -1,6 +1,6 @@
 import { ReturnModelType } from '@typegoose/typegoose';
 import { AnyParamConstructor, BeAnObject } from '@typegoose/typegoose/lib/types';
-import { FilterQuery, QueryOptions, UpdateQuery } from 'mongoose';
+import { FilterQuery, PipelineStage, QueryOptions, UpdateQuery } from 'mongoose';
 
 import { BadRequestError, NotFoundError } from './error.util';
 import { capitalizeFirst } from './string.util';
@@ -65,6 +65,10 @@ export class Repository<T> {
 
   async count(query?: FilterQuery<T>) {
     return this.model.countDocuments(query || {}).exec();
+  }
+
+  async aggregate(pipeline: PipelineStage[]) {
+    return this.model.aggregate(pipeline).exec();
   }
 
   async upsert(query: FilterQuery<T>, data: Partial<T>) {

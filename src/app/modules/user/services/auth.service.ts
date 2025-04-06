@@ -1,10 +1,11 @@
-import { exclude } from '../../../../shared/utils/helper.util';
 import { Repository } from '../../../../shared/utils/data-repo.util';
 import encrypterUtil from '../../../../shared/utils/encrypter.util';
 import { BadRequestError, UnauthorizedError } from '../../../../shared/utils/error.util';
+import { exclude } from '../../../../shared/utils/helper.util';
+import { MongoObjectId } from '../../../../types';
 import { JWTService } from '../../utility/services/jwt.service';
 import { LoginDto, LoginResponse, RegisterDto } from '../interfaces/auth.interface';
-import { UserRole, UserStatus } from '../interfaces/user.interface';
+import { UserStatus } from '../interfaces/user.interface';
 import UserModel, { User } from '../models/user.model';
 
 class AuthService {
@@ -17,7 +18,7 @@ class AuthService {
   async registerUser(userData: RegisterDto) {
     await this.repo.findOneAndThrow({ email: userData.email });
 
-    const user = await this.repo.create({ data: { ...userData, role: UserRole.ADMIN } });
+    const user = await this.repo.create({ data: userData });
     const userWithoutPassword = exclude(user.toJSON(), ['password']);
     return userWithoutPassword;
   }
@@ -36,14 +37,14 @@ class AuthService {
 
     this.validateUserStatus(user);
 
-    const { accessToken } = JWTService.createSessionToken({ id: user._id.toString(), role: user.role });
+    const { accessToken } = JWTService.createSessionToken({ id: user._id, role: user.role });
 
     await this.repo.update({ _id: user._id }, { data: { lastLoginAt: new Date() } });
     const userWithoutPassword = exclude(user.toJSON(), ['password']);
     return { ...userWithoutPassword, accessToken };
   }
 
-  async changePassword(id: string, password: string): Promise<void> {
+  async changePassword(id: MongoObjectId, password: string): Promise<void> {
     const hashedPassword = await encrypterUtil.hash(password);
     await this.repo.update({ _id: id }, { data: { password: hashedPassword } });
   }

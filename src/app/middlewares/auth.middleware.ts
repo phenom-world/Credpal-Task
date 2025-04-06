@@ -65,7 +65,7 @@ class AuthMiddleware implements IAuthMiddleware {
 
   private getUser(user: DocumentType<User>) {
     return {
-      id: user._id.toString(),
+      id: user._id,
       email: user.email,
       role: user.role,
       status: user.status,
