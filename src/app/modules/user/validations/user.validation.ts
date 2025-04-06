@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 
 import { validate } from '../../../../shared/helpers/validation.helper';
-import { sanitize } from '../../../../shared/utils';
+import { sanitize } from '../../../../shared/utils/helper.util';
 import { UserStatus } from '../interfaces/user.interface';
 
 export const getAllUsersQuerySchema = z.object({

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { ApiResponse } from '../../../../shared/utils';
+import { ApiResponse } from '../../../../shared/utils/helper.util';
 import { CustomRequest } from '../../../../types';
 import { asyncHandler } from '../../../middlewares/async-handler.middleware';
 import { JWTService } from '../../utility/services/jwt.service';

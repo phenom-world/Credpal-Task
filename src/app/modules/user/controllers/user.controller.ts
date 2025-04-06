@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import { paginateResponse } from '../../../../shared/helpers/paginate-response.helper';
-import { ApiResponse } from '../../../../shared/utils';
+import { ApiResponse } from '../../../../shared/utils/helper.util';
 import { asyncHandler } from '../../../middlewares';
 import UserService from '../services/user.service';
 

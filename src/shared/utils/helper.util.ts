@@ -4,12 +4,6 @@ import { z } from 'zod';
 
 import { ObjectData } from '../../types';
 
-export type IActivationToken = string;
-
-export const generateOtp = (): IActivationToken => {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-};
-
 export const ApiResponse = <T>(res: Response, status: number = StatusCodes.OK, data: T | null, message?: string) => {
   res.status(status);
   res.json({ success: true, message, data });
@@ -42,13 +36,6 @@ export const sanitize = <T extends ObjectData>(obj?: T): Partial<T> => {
     }
   });
   return pickedObj;
-};
-
-export const isValue = (value?: string) => {
-  if (value !== 'undefined' && value !== 'null' && value) {
-    return value;
-  }
-  return undefined;
 };
 
 export const validateFields = (requiredFields: { field: string; message: string }[], data: ObjectData, ctx: z.RefinementCtx) => {
