@@ -1,6 +1,6 @@
 import { ReturnModelType } from '@typegoose/typegoose';
 import { AnyParamConstructor, BeAnObject } from '@typegoose/typegoose/lib/types';
-import { FilterQuery, PipelineStage, QueryOptions, UpdateQuery } from 'mongoose';
+import { ClientSession, FilterQuery, PipelineStage, QueryOptions, UpdateQuery } from 'mongoose';
 
 import { BadRequestError, NotFoundError } from './error.util';
 import { capitalizeFirst } from './string.util';
@@ -23,6 +23,10 @@ export class Repository<T> {
 
   async create({ data }: { data: Partial<T> }) {
     return this.model.create(data);
+  }
+
+  async sessionCreate({ data, session }: { data: Partial<T>; session: ClientSession }) {
+    return this.model.create([data], { session });
   }
 
   async createMany(data: Partial<T>[]) {

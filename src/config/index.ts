@@ -1,3 +1,4 @@
 import application from './application';
+import services from './services';
 
-export default { application };
+export default { application, services };

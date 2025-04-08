@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { isObject } from '../../shared/utils/helper.util';
 import { InternalServerError } from '../../shared/utils/error.util';
+import { isObject } from '../../shared/utils/helper.util';
 import { ObjectData } from '../../types';
 import { asyncHandler } from './async-handler.middleware';
 

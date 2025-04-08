@@ -23,7 +23,7 @@ const config = convict({
   },
   database: {
     url: {
-      default: 'mongodb://localhost:27017/credpal-task',
+      default: 'mongodb://localhost:27017/pursepal',
       doc: 'MongoDB connection URL',
       env: 'DATABASE_URL',
       format: String,

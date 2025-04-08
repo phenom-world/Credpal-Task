@@ -50,6 +50,16 @@ class AuthMiddleware implements IAuthMiddleware {
     };
   };
 
+  authorizeCron = (req: Request, res: Response, next: NextFunction) => {
+    const api_key = req.headers['cron-api-key'];
+    if (!api_key) {
+      throw new BadRequestError('Cron Api Key not provided');
+    } else if (api_key !== process.env.CRON_API_KEY) {
+      throw new BadRequestError('Cron Api Key is invalid');
+    }
+    next();
+  };
+
   private getToken(req: Request): string | null {
     const authorization = req.headers.authorization;
     const authToken = req.cookies.authToken;

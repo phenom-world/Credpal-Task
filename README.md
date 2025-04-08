@@ -32,8 +32,8 @@ Create a `.env` file in the root directory with the following variables:
 ```env
 NODE_ENV=development
 PORT=4000
-DATABASE_URL=mongodb://localhost:27017/credpal-task
-APP_NAME=credpal-task
+DATABASE_URL=mongodb://localhost:27017/pursepal
+APP_NAME=pursepal
 ACCESS_TOKEN_EXPIRE=3600
 ACCESS_TOKEN_SECRET=your_secret_key
 ```
