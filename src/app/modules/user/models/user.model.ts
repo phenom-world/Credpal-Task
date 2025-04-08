@@ -1,4 +1,5 @@
 import { getModelForClass, index, modelOptions, pre, prop } from '@typegoose/typegoose';
+import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
 import encrypterUtil from '../../../../shared/utils/encrypter.util';
 import { schemaOptions } from '../../utility/constants/schema.contants';
@@ -12,7 +13,7 @@ import { UserRole, UserStatus } from '../interfaces/user.interface';
 })
 @modelOptions(schemaOptions)
 @index({ email: 1 }, { unique: true })
-export class User {
+export class User extends TimeStamps {
   @prop({ required: true, validate: emailValidator })
   email!: string;
 
@@ -34,8 +35,11 @@ export class User {
   @prop({ enum: UserRole, type: String, default: UserRole.USER })
   role!: UserRole;
 
-  @prop()
-  deletedAt?: Date;
+  @prop({ unique: true })
+  paypalCustomerId?: string;
+
+  @prop({ unique: true })
+  paypalCardCustomerId?: string;
 
   async comparePassword(enteredPassword: string): Promise<boolean> {
     return encrypterUtil.compare(enteredPassword, this.password);

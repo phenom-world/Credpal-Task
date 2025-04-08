@@ -1,10 +1,11 @@
 import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
+import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 import { Types } from 'mongoose';
 
 import { schemaOptions } from '../../utility/constants/schema.contants';
 
 @modelOptions(schemaOptions)
-export class Savings {
+export class Savings extends TimeStamps {
   @prop({ required: true, min: 0 })
   amount!: number;
 
